@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keranjang - GlowBelle</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #ffffff, #e4abab, #c52c55);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: linear-gradient(90deg, #ea6680, #c52c55);
+  color: white;
+}
+
+/* kiri */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* LOGO BULAT + SEIMBANG DENGAN TEXT */
+.logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;     /* bikin bulat */
+  object-fit: cover;      /* biar ga gepeng */
+}
+/* tengah */
+.nav-center {
+  display: flex;
+  gap: 30px;
+  font-size: 12px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 90;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.nav-center a:hover {
+  background: rgba(146, 8, 8, 0.3);
+}
+
+/* ACTIVE (yang kamu mau banget ini) */
+.nav-center a.active {
+  background: white;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* kanan */
+.nav-right button {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: rgb(204, 1, 1);
+  color: #ffffff;
+  font-weight: 90;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-right button:hover {
+  transform: scale(1.05);
+}
+
+/* tombol logout kanan */
+.logout-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #e53e3e;
+  color: white;
+  cursor: pointer;
+}
+/* CART */
+.container {
+  padding: 30px;
+  color: #000000;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-info {
+  flex: 1;
+}
+
+.cart-info h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.cart-info p {
+  margin: 5px 0;
+  color: #000000;
+  font-weight: bold;
+}
+
+/* QTY */
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: linear-gradient(135deg, #c52c55, #ea6680);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* DELETE */
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* TOTAL */
+.total-box {
+  margin-top: 20px;
+  background: white;
+  color: #000000;
+  padding: 20px;
+  border-radius: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(90deg, #ea6680, #c52c55);
+  color: white;
+  cursor: pointer;
+}
+
+.checkout-btn:focus {
+  outline: none;
+  background: #ead6da;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.4);
+}
+
+.checkout-btn:hover,
+.checkout-btn:focus {
+  background: #ad374c;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+.popup.show {
+  display: flex;
+}
+
+.popup-content {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.popup.show .popup-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+
+/* tombol */
+.popup-content button {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #c52c55, #ea6680);
+  color: white;
+  cursor: pointer;
+}
+
+#invoice-items {
+  text-align: left;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.invoice-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+#invoice.popup.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.invoice-box {
+  width: 320px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+
+  transform: translateY(40px) scale(0.9);
+  opacity: 0;
+  transition: 0.35s ease;
+}
+
+.popup.show .invoice-box {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* header */
+.invoice-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.invoice-header p {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* item list */
+.invoice-items {
+  text-align: left;
+  margin: 15px 0;
+  font-size: 12px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.invoice-items div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+/* total */
+.invoice-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+/* tombol */
+.pay-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #c52c55, #ff5c8a);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+.pay-btn:hover {
+  transform: scale(1.03);
+}
+
+.close-btn {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.custom-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px); /* Efek blur background */
+  display: none; /* Sembunyi dulu */
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.popup-content-aesthetic {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  animation: popupPop 0.3s ease-out;
+}
+
+@keyframes popupPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.icon-box {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.popup-content-aesthetic h2 {
+  color: #c52c55;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.popup-content-aesthetic p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn-done {
+  background: linear-gradient(90deg, #ea6680, #c52c55);
+  color: white;
+  border: none;
+  padding:  10px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+
+
+.btn-done:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(197, 44, 85, 0.3);
+}
+
+#popup-success {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 10001; /* Pastikan lebih tinggi dari invoice */
+}
+
+/* Biar popup sukses tampil di tengah */
+#popup-success .popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.btn-close-small {
+  background: #ea6680;
+  color: white;
+  border: none;
+  padding: 6px 20px;   /* Angka pertama (6px) adalah tinggi, kedua (20px) adalah lebar samping */
+  border-radius: 20px;
+  font-size: 11px;     /* Ukuran tulisan diperkecil */
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.btn-close-small:hover {
+  background: #c52c55;
+  transform: scale(1.05);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background: white;
+  color: #c52c55;
+}
+
+.btn-secondary {
+  background: #ff4d6d;
+  color: white;
+}
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 50px;
+  background: #fff0f3;
+}
+
+.cta h2 {
+  color: #c52c55;
+}
+
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 40px 10%;
+  background: #fff0f3;
+  border-top: 2px solid #e4abab;
+  color: #c52c55;
+}
+
+.footer-col {
+  width: 30%;
+  min-width: 200px;
+}
+
+.footer a {
+  display: block;
+  color: #555;
+  text-decoration: none;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.footer p {
+  font-size: 13px;
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <img src="img/logo.png" class="logo">
+    <span class="brand">LIAÉ Skincare</span>
+  </div>
+
+  <div class="nav-center">
+    <a href="home.html">HOME</a>
+    <a href="dashboard.html">PRODUCT</a>
+    <a href="cart.html" class="active">CART</a>
+  </div>
+
+  <div class="nav-right">
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="container">
+  <h2>SHOPPING CART</h2>
+
+  <div id="cart-list"></div>
+
+  <div class="total-box">
+    <h3>Total: Rp <span id="total">0</span></h3>
+   <button class="checkout-btn" onclick="openInvoice()">CHECKOUT</button> 
+</div>
+
+<script>
+function loadCart() {
+  let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+  const container = document.getElementById('cart-list')
+  const totalEl = document.getElementById('total')
+
+  container.innerHTML = ""
+  let total = 0
+
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Your cart is empty. Start shopping now!</p>"
+    totalEl.innerText = 0
+    return
+  }
+
+  cart.forEach((item, index) => {
+    if (!item) return
+
+    item.qty = item.qty || 1
+    total += item.price * item.qty
+
+    container.innerHTML += `
+      <div class="cart-item">
+        <img src="${item.image}">
+        
+        <div class="cart-info">
+          <h3>${item.name}</h3>
+          <p>Rp ${item.price.toLocaleString("id-ID")}</p>
+        </div>
+
+        <div class="qty">
+          <button onclick="changeQty(${index}, -1)">-</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${index}, 1)">+</button>
+        </div>
+
+        <button class="delete-btn" onclick="removeItem(${index})">🗑</button>
+      </div>
+    `
+  })
+
+  totalEl.innerText = total.toLocaleString("id-ID")
+}
+
+function changeQty(index, change) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+  if (!cart[index]) return
+
+  cart[index].qty = (cart[index].qty || 1) + change
+
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1)
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart))
+  loadCart()
+}
+
+function removeItem(index) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+  if (!cart[index]) return
+
+  cart.splice(index, 1)
+  localStorage.setItem('cart', JSON.stringify(cart))
+  loadCart()
+}
+
+function logout() {
+  localStorage.removeItem('token')
+  window.location.href = "index.html"
+}
+
+function openPopup() {
+  document.getElementById("popup").classList.add("show")
+}
+
+function showDetail(product) {
+  document.getElementById("popup-img").src = product.image
+  document.getElementById("popup-name").innerText = product.name
+  document.getElementById("popup-price").innerText = "Rp " + product.price.toLocaleString("id-ID")
+  document.getElementById("popup-desc").innerText = product.description
+
+  const popup = document.getElementById("popup")
+  popup.style.display = "flex"
+  popup.classList.add("show")
+}
+
+function closePopup() {
+  const popup = document.getElementById("popup")
+  popup.style.display = "none"
+  popup.classList.remove("show")
+}
+
+function openInvoice() {
+  let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+  const container = document.getElementById("invoice-items")
+  const totalEl = document.getElementById("invoice-total")
+
+  container.innerHTML = ""
+  let total = 0
+
+  cart.forEach(item => {
+    let qty = item.qty || 1
+    let subtotal = item.price * qty
+    total += subtotal
+
+    container.innerHTML += `
+      <div class="invoice-item">
+        <span>${item.name} x${qty}</span>
+        <span>Rp ${subtotal.toLocaleString("id-ID")}</span>
+      </div>
+    `
+  })
+
+  totalEl.innerText = total.toLocaleString("id-ID")
+
+  // 🔥 delay kecil biar animasi terasa smooth
+  const invoice = document.getElementById("invoice")
+  invoice.classList.add("show")
+}
+
+function closeInvoice() {
+  document.getElementById("invoice").classList.remove("show")
+}
+
+function payNow() {
+  alert("Pembayaran berhasil! 🎉")
+
+  localStorage.removeItem("cart")
+  closeInvoice()
+  loadCart()
+}
+
+function prosesBayar() {
+  // ... logika pembayaran kamu ...
+  
+  // GANTI alert() dengan ini:
+  document.getElementById("success-popup").style.display = "flex";
+}
+
+function payNow() {
+  // 1. Sembunyikan popup invoice
+  document.getElementById("invoice").classList.remove("show");
+
+  // 2. Kosongkan data di localStorage
+  localStorage.removeItem("cart");
+
+  // 3. Munculkan popup sukses buatan sendiri
+  document.getElementById("popup-success").style.display = "flex";
+}
+
+// Pastikan fungsi tutup ini juga ada
+function closeSuccessPopup() {
+  document.getElementById("popup-success").style.display = "none";
+  window.location.reload(); // Refresh halaman agar keranjang jadi kosong
+}
+
+loadCart()
+</script>
+
+<!-- POPUP ORDER -->
+ <div id="popup" class="popup">
+  <div class="popup-content">
+    <span onclick="closePopup()" class="close">&times;</span>
+
+    <img id="popup-img" src="" />
+    <h2 id="popup-name"></h2>
+    <p id="popup-price"></p>
+    <p id="popup-desc"></p>
+  </div>
+ </div>
+
+<div id="popup-success" class="popup">
+  <div class="popup-content" style="width: 280px; transform: scale(1); opacity: 1;">
+   <h2 style="font-size: 15px; color: #c52c55; margin-bottom: 5px;">Payment successfully processed.</h2>
+    <p style="font-size: 14px; color: #db9090; line-height: 1.5;"> ❤︎ THANK YOU ❤︎</p>
+    <button onclick="closeSuccessPopup()" class="btn-close-small">CLOSE</button>
+  </div>
+</div>
+
+<div id="invoice" class="popup">
+  <div class="popup-content invoice-box">
+
+    <div class="invoice-header">
+      <h2> CHECKOUT</h2>
+      <p>Review order details</p>
+    </div>
+
+    <div id="invoice-items" class="invoice-items"></div>
+
+    <div class="invoice-total">
+      <span>Total</span>
+      <h3>Rp <span id="invoice-total">0</span></h3>
+    </div>
+
+    <button class="pay-btn" onclick="payNow()">BUY NOW</button>
+    <button class="close-btn" onclick="closeInvoice()">CLOSE</button>
+      </div>
+  </div>
+  </div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to glow your skin?</h2>
+  <button class="btn btn-primary" onclick="location.href='dashboard.html'">Start Shopping</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-col">
+    <h3>LIAÉ Skincare</h3>
+    <p>Katalog skincare yang dikurasi dengan cermat menghadirkan berbagai pilihan produk berkualitas yang dirancang untuk membantu menjaga kesehatan kulit, merawat kelembapan, serta mendukung rutinitas perawatan kulit harian agar tetap terlihat segar dan bercahaya.</p>
+  </div>
+
+  <div class="footer-col">
+    <h3>Quick Links</h3>
+    <a href="home.html">Home</a>
+    <a href="dashboard.html">Products</a>
+    <a href="cart.html">Cart</a>
+  </div>
+
+  <div class="footer-col">
+    <h3>Follow Us</h3>
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="#">YouTube</a>
+  </div>
+</div>
+
+</body>
+</html>

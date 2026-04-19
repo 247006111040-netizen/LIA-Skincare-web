@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin LIAÉ </title>
+
+<style>
+    
+body {
+  font-family: Arial;
+  background: #f4f6f9;
+  padding: 20px;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+}
+
+button {
+  padding: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+}
+
+.card {
+  background: white;
+  padding: 10px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Admin Panel</h1>
+
+<input id="name" placeholder="Nama produk">
+<input id="price" placeholder="Harga">
+<input id="image" placeholder="URL gambar">
+<input id="desc" placeholder="Deskripsi">
+
+<button onclick="addProduct()">Tambah</button>
+
+<div id="list"></div>
+
+<script>
+async function load() {
+  const res = await fetch('http://localhost:3000/products')
+  const data = await res.json()
+
+  const list = document.getElementById('list')
+  list.innerHTML = ''
+
+  data.forEach(p => {
+    list.innerHTML += `
+      <div class="card">
+        <b>${p.name}</b> 
+        <p>Rp ${p.price.toLocaleString("id-ID")}</p>
+        <button onclick="hapus(${p.id})">Hapus</button>
+      </div>
+    `
+  })
+}
+
+async function addProduct() {
+  const token = localStorage.getItem('token')
+
+  await fetch('http://localhost:3000/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({
+      name: name.value,
+      price: price.value,
+      image: image.value,
+      description: desc.value
+    })
+  })
+
+  load()
+}
+
+async function hapus(id) {
+  const token = localStorage.getItem('token')
+
+  await fetch(`http://localhost:3000/products/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+
+  load()
+}
+
+load()
+</script>
+<div class="navbar">
+  <h2>LIAÉ Skincare</h2>
+  <div>
+    <a href="dashboard.html">Produk</a>
+    <a href="cart.html">Keranjang 🛒</a>
+  </div>
+</div>
+
+</body>
+</html>

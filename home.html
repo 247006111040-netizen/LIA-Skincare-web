@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LIAÉ Skincare - Home</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #ffffff, #e4abab, #c52c55);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: linear-gradient(90deg, #ea6680, #c52c55);
+  color: white;
+}
+
+/* kiri */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* LOGO BULAT + SEIMBANG DENGAN TEXT */
+.logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;     /* bikin bulat */
+  object-fit: cover;      /* biar ga gepeng */
+}
+/* tengah */
+.nav-center {
+  display: flex;
+  gap: 30px;
+  font-size: 12px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 90;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.nav-center a:hover {
+  background: rgba(146, 8, 8, 0.3);
+}
+
+/* ACTIVE (yang kamu mau banget ini) */
+.nav-center a.active {
+  background: white;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* kanan */
+.nav-right button {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: rgb(204, 1, 1);
+  color: #ffffff;
+  font-weight: 90;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-right button:hover {
+  transform: scale(1.05);
+}
+
+/* tombol logout kanan */
+.logout-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #e53e3e;
+  color: white;
+  cursor: pointer;
+}
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  color: #c52c55;
+}
+
+.hero h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background: white;
+  color: #c52c55;
+}
+
+.btn-secondary {
+  background: #c52c55;
+  color: white;
+}
+
+/* SECTION */
+.section {
+  padding: 50px 10%;
+  background: white;
+  margin-top: 20px;
+}
+
+.section h2 {
+  color: #c52c55;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* BEST SELLER */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #fff0f3;
+  padding: 10px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+  height: 180px;
+  object-fit: cover;
+}
+
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 50px;
+  background: #fff0f3;
+}
+
+.cta h2 {
+  color: #c52c55;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 40px 10%;
+  background: #fff0f3;
+  border-top: 2px solid #e4abab;
+  color: #c52c55;
+}
+
+.footer-col {
+  width: 30%;
+  min-width: 200px;
+}
+
+.footer a {
+  display: block;
+  color: #555;
+  text-decoration: none;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.footer p {
+  font-size: 13px;
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <!-- KIRI -->
+  <div class="nav-left">
+    <img src="img/logo.png" class="logo">
+    <span class="brand">LIAÉ Skincare</span>
+  </div>
+
+  <!-- TENGAH -->
+  <div class="nav-center">
+    <a href="home.html" class="active">HOME</a>
+    <a href="dashboard.html">PRODUCT</a>
+    <a href="cart.html">CART</a>
+  </div>
+
+  <!-- KANAN -->
+  <div class="nav-right">
+    <button onclick="location.href='index.html'">Logout</button>
+  </div>
+
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1> Shine with your natural glow </h1>
+  <p>Skincare crafted for healthy, soft, and naturally radiant skin ♡</p>
+  <button class="btn btn-primary" onclick="location.href='dashboard.html'">Shop Now</button>
+  <button class="btn btn-secondary" onclick="location.href='dashboard.html'">Explore</button>
+</div>
+
+<!-- BRAND STORY -->
+<div class="section">
+  <h2>About LIAÉ</h2>
+  <p style="text-align:center; max-width:700px; margin:auto; color:#666;">
+    LIAÉ Skincare delivers gentle and safe skincare solutions for all skin types, designed to keep your skin healthy, hydrated, and naturally glowing every day.
+  </p>
+</div>
+
+<!-- BEST SELLER -->
+<div class="section">
+  <h2>Best Seller</h2>
+
+  <div class="products">
+    <div class="card">
+      <img src="img/serum.jpg">
+      <p>Serum Glow</p>
+    </div>
+
+    <div class="card">
+      <img src="img/sunscreen.jpg">
+      <p>Sunscreen</p>
+    </div>
+
+    <div class="card">
+      <img src="img/moisturizer.jpg">
+      <p>Moisturizer</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to glow your skin?</h2>
+  <button class="btn btn-primary" onclick="location.href='dashboard.html'">Start Shopping</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-col">
+    <h3>LIAÉ Skincare</h3>
+    <p>Katalog skincare yang dikurasi dengan cermat menghadirkan berbagai pilihan produk berkualitas yang dirancang untuk membantu menjaga kesehatan kulit, merawat kelembapan, serta mendukung rutinitas perawatan kulit harian agar tetap terlihat segar dan bercahaya.</p>
+  </div>
+
+  <div class="footer-col">
+    <h3>Quick Links</h3>
+    <a href="home.html">Home</a>
+    <a href="dashboard.html">Products</a>
+    <a href="cart.html">Cart</a>
+  </div>
+
+  <div class="footer-col">
+    <h3>Follow Us</h3>
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="#">YouTube</a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LIAÉ Skincare</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #ffffff, #e4abab, #c52c55);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: linear-gradient(90deg, #ea6680, #c52c55);
+  color: white;
+   z-index: 2000;
+
+  position: relative;
+}
+
+/* kiri */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* LOGO BULAT + SEIMBANG DENGAN TEXT */
+.logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;     /* bikin bulat */
+  object-fit: cover;      /* biar ga gepeng */
+}
+/* tengah */
+.nav-center {
+  display: flex;
+  gap: 30px;
+  font-size: 12px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 90;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.nav-center a:hover {
+  background: rgba(146, 8, 8, 0.3);
+}
+
+/* ACTIVE (yang kamu mau banget ini) */
+.nav-center a.active {
+  background: white;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* kanan */
+.nav-right button {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: rgb(204, 1, 1);
+  color: #ffffff;
+  font-weight: 90;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-right button:hover {
+  transform: scale(1.05);
+}
+
+/* tombol logout kanan */
+.logout-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #f00000;
+  color: white;
+  cursor: pointer;
+}
+
+/* PRODUK */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD - Perbaikan agar tombol sejajar */
+.card {
+  background: rgba(255,255,255,0.95);
+  padding: 10px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transition: 0.3s;
+  
+  /* Tambahkan 3 baris ini */
+  display: flex;
+  flex-direction: column;
+  min-height: 250px; /* Opsional: menjaga tinggi minimal kartu tetap sama */
+}
+
+.card h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.card p {
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* TOAST */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #c52c55, #ea6680);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s;
+  transition: 0.4s;
+  pointer-events: none;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none; /* Awalnya sembunyi */
+  justify-content: center;
+  align-items: center;
+  z-index: 3000; /* di bawah navbar */
+  pointer-events: auto; /* BIAR GA NUTUP KLIK */
+}
+
+
+.toast {
+  z-index: 9999; /* 🔥 BIAR DI ATAS SEMUA */
+}
+
+.desc {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 5px;
+  margin-top: auto;
+}
+.detail-btn {
+  padding: 3px 3px;
+  font-size: 8px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(90deg, #c52c55, #ea6680);
+}
+.detail-btn:focus {
+  background: #ad374c;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+}
+
+/* Tombol beli - Perbaikan posisi */
+.buy-btn {
+  margin-top: auto; /* 🔥 Ini yang bikin tombol otomatis nendang ke bawah */
+  padding: 6px 6px;
+  border: none;
+  border-radius: 10px;
+  font-size: 8px;
+  background: linear-gradient(90deg, #c52c55, #ea6680);
+  color: white;
+  cursor: pointer;
+}
+
+.buy-btn:focus {
+  background: #ad374c;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+}
+.detail-btn:hover {
+  background: linear-gradient(90deg, #c52c55, #ea6680);
+  color: white;
+}
+
+
+
+.popup-content {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 240px;   /* 🔥 lebih kecil */
+  text-align: center;
+  position: relative;
+}
+
+.popup-content img {
+  width: 100%;
+  height: 200px;  /* 🔥 biar ga terlalu besar */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.popup-content h2 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.popup-content p {
+  font-size: 12px;
+  color: #555;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background: white;
+  color: #c52c55;
+}
+
+.btn-secondary {
+  background: #ff4d6d;
+  color: white;
+}
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 50px;
+  background: #fff0f3;
+}
+
+.cta h2 {
+  color: #c52c55;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 40px 10%;
+  background: #fff0f3;
+  border-top: 2px solid #e4abab;
+  color: #c52c55;
+}
+
+.footer-col {
+  width: 30%;
+  min-width: 200px;
+}
+
+.footer a {
+  display: block;
+  color: #555;
+  text-decoration: none;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.footer p {
+  font-size: 13px;
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="navbar">
+
+  <!-- KIRI -->
+  <div class="nav-left">
+  <img src="img/logo.png" class="logo">
+  <span class="brand"> LIAÉ Skincare  </span>
+  </div>
+
+  <!-- TENGAH -->
+  <div class="nav-center">
+    <a href="home.html" ">HOME</a>
+    <a href="dashboard.html" class="active">PRODUCT</a>
+    <a href="cart.html">CART </a>
+  </div>
+
+  <!-- KANAN -->
+  <div class="nav-right">
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div style="padding:20px; display:flex; gap:10px; flex-wrap:wrap;">
+
+  <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="filterProducts()"
+  style="padding:8px; border-radius:10px; border:none; width:200px;">
+
+  <select id="sortPrice" onchange="filterProducts()"
+  style="padding:8px; border-radius:10px; border:none; width:150px;">
+    <option value="">Sort by Price</option>
+    <option value="low">Lowest Price</option>
+    <option value="high">Highest Price</option>
+  </select>
+</div>
+
+
+<!-- PRODUK -->
+<main style="flex:1;">
+  <div class="products" id="products"></div>
+</main>
+
+<script>
+const products = [
+  {
+    name: "Facial Wash",
+    price: 40000,
+    description: "Pembersih wajah lembut yang mengangkat kotoran, minyak, dan sisa makeup tanpa membuat kulit kering.",
+    image: "img/facial.jpg"
+  },
+  {
+    name: "Toner",
+    price: 50000,
+    description: "Menyegarkan dan menyeimbangkan pH kulit setelah mencuci wajah, membantu penyerapan skincare berikutnya.",
+    image: "img/toner.jpg"
+  },
+  {
+    name: "Serum",
+    price: 85000,
+    description: "Serum ringan yang membantu mencerahkan kulit, meratakan warna kulit, dan membuat wajah tampak glowing.",
+    image: "img/serum.jpg"
+  },
+  {
+    name: "Moisturizer",
+    price: 60000,
+    description: "Melembapkan kulit secara optimal, menjaga kulit tetap halus, lembut, dan kenyal sepanjang hari.",
+    image: "img/moisturizer.jpg"
+  },
+  {
+    name: "Day Cream",
+    price: 65000,
+    description: "Krim siang yang melembapkan sekaligus melindungi kulit dari paparan sinar matahari dan polusi.",
+    image: "img/daycream.jpg"
+  },
+  {
+    name: "Night Cream",
+    price: 70000,
+    description: "Krim malam yang membantu regenerasi kulit saat tidur, membuat kulit lebih sehat dan cerah di pagi hari.",
+    image: "img/nightcream.jpg"
+  },
+  {
+    name: "Essence",
+    price: 65000,
+    description: "Membantu menghidrasi kulit lebih dalam dan meningkatkan efektivitas skincare lainnya.",
+    image: "img/essence.jpg"
+  },
+  {
+    name: "Eye Cream",
+    price: 75000,
+    description: "Mengurangi kantung mata dan garis halus, membuat area mata tampak lebih segar dan cerah.",
+    image: "img/eyecream.jpg"
+  },
+  {
+    name: "Acne Cream",
+    price: 55000,
+    description: "Krim khusus untuk membantu meredakan jerawat, mengurangi kemerahan, dan mempercepat penyembuhan.",
+    image: "img/acnecream.jpg"
+  },
+  {
+    name: "Sleeping Mask",
+    price: 70000,
+    description: "Masker malam yang bekerja saat tidur untuk melembapkan dan menutrisi kulit secara intensif.",
+    image: "img/sleepingmask.jpg"
+  },
+  {
+    name: "Face Mask",
+    price: 60000,
+    description: "Masker wajah yang membantu membersihkan pori-pori dan membuat kulit terasa segar dan bersih.",
+    image: "img/facemask.jpg"
+  },
+  {
+    name: "Face Scrub",
+    price: 55000,
+    description: "Mengangkat sel kulit mati secara lembut, membuat kulit lebih halus dan cerah.",
+    image: "img/facescrub.jpg"
+  },
+  {
+    name: "Sheet Mask",
+    price: 25000,
+    description: "Masker praktis yang memberikan hidrasi instan dan membuat kulit tampak lebih segar.",
+    image: "img/sheetmask.jpg"
+  },
+  {
+    name: "Exfoliating Toner",
+    price: 65000,
+    description: "Membantu mengangkat sel kulit mati dan mempercepat regenerasi kulit untuk tampilan lebih cerah.",
+    image: "img/exfoliatingtoner.jpg"
+  },
+  {
+    name: "Face Mist",
+    price: 45000,
+    description: "Menyegarkan dan melembapkan wajah kapan saja, cocok digunakan sepanjang hari.",
+    image: "img/facemist.jpg"
+  },
+  {
+    name: "Micellar Cleansing Water",
+    price: 50000,
+    description: "Membersihkan makeup dan kotoran dengan lembut tanpa perlu dibilas, cocok untuk semua jenis kulit.",
+    image: "img/micellarcleansingwater.jpg"
+  },
+  {
+    name: "Sunscreen",
+    price: 60000,
+    description: "Melindungi kulit dari sinar UV dan mencegah penuaan dini dengan tekstur ringan dan tidak lengket.",
+    image: "img/sunscreen.jpg"
+  },
+  {
+    name: "Sunblock",
+    price: 65000,
+    description: "Perlindungan maksimal dari sinar matahari untuk aktivitas luar ruangan.",
+    image: "img/sunblock.jpg"
+  },
+  {
+    name: "Cleansing Oil",
+    price: 70000,
+    description: "Membersihkan makeup waterproof dan kotoran secara menyeluruh tanpa membuat kulit kering.",
+    image: "img/cleansingoil.jpg"
+  },
+  {
+    name: "Cleansing Balm",
+    price: 75000,
+    description: "Balm lembut yang meleleh saat diaplikasikan untuk mengangkat makeup dan menjaga kelembapan kulit.",
+    image: "img/cleansingbalm.jpg"
+  }
+]
+
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.push(product);
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  // Cukup panggil ini untuk memunculkan teks di pojok kanan atas
+  showToast(); 
+
+  // PENTING: Hapus atau beri tanda komentar pada baris di bawah ini:
+  // document.getElementById("popup").classList.add("show") 
+}
+
+// load produk
+function loadProducts(data = products) {
+  const container = document.getElementById('products')
+  container.innerHTML = ""
+
+  data.forEach(p => {
+    container.innerHTML += `
+      <div class="card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+        <p>Rp ${p.price.toLocaleString("id-ID")}</p>
+
+        <div class="btn-group">
+          <button class="buy-btn" onclick='addToCart(${JSON.stringify(p)})'>ADD TO CART</button>
+          <button class="detail-btn" onclick='showDetail(${JSON.stringify(p)})'>DETAIL</button>
+        </div>
+      </div>
+    `
+  })
+}
+
+// logout
+function logout() {
+  // Hapus data login
+  localStorage.removeItem('token');
+  // Langsung pindah ke halaman login
+  window.location.href = "index.html";
+}
+
+function showToast() {
+  const toast = document.getElementById("toast")
+
+  toast.classList.add("show")
+
+  setTimeout(() => {
+    toast.classList.remove("show")
+  }, 2000)
+}
+
+
+function showDetail(product) {
+  const popup = document.getElementById("popup")
+
+  document.getElementById("popup-img").src = product.image
+  document.getElementById("popup-name").innerText = product.name
+  document.getElementById("popup-price").innerText = "Rp " + product.price.toLocaleString("id-ID")
+  document.getElementById("popup-desc").innerText = product.description
+
+  popup.style.display = "flex"
+}
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+
+function filterProducts() {
+  let keyword = document.getElementById("searchInput").value.toLowerCase()
+  let sort = document.getElementById("sortPrice").value
+
+  let filtered = products.filter(p =>
+    p.name.toLowerCase().includes(keyword)
+  )
+
+  if (sort === "low") {
+    filtered.sort((a, b) => a.price - b.price)
+  } else if (sort === "high") {
+    filtered.sort((a, b) => b.price - a.price)
+  }
+
+  loadProducts(filtered)
+}
+loadProducts()
+</script>
+
+<div id="toast" class="toast">Added to your cart!</div>
+
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <img id="popup-img">
+    <h2 id="popup-name"></h2>
+    <p id="popup-price"></p>
+    <p id="popup-desc"></p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to glow your skin?</h2>
+  <button class="btn btn-primary" onclick="location.href='dashboard.html'">Start Shopping</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-col">
+    <h3>LIAÉ Skincare</h3>
+    <p>Katalog skincare yang dikurasi dengan cermat menghadirkan berbagai pilihan produk berkualitas yang dirancang untuk membantu menjaga kesehatan kulit, merawat kelembapan, serta mendukung rutinitas perawatan kulit harian agar tetap terlihat segar dan bercahaya.</p>
+  </div>
+
+  <div class="footer-col">
+    <h3>Quick Links</h3>
+    <a href="home.html">Home</a>
+    <a href="dashboard.html">Products</a>
+    <a href="cart.html">Cart</a>
+  </div>
+
+  <div class="footer-col">
+    <h3>Follow Us</h3>
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="#">YouTube</a>
+  </div>
+</div>
+
+</body>
+</html>

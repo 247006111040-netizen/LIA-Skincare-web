@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - LIAÉ Skincare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* 1. RESET & BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ea6680, #c52c55);
+  padding: 20px;
+}
+
+/* 2. BRANDING */
+.brand {
+  text-align: center;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.brand h2 {
+  font-size: 24px;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.brand p {
+  font-size: 13px;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+/* 3. CARD (ESTETIKA PERSEGI PANJANG) */
+.card {
+  width: 100%;
+  max-width: 380px; 
+  /* Padding saya buat seimbang 30px agar teks LOGIN simetris */
+  padding: 30px; 
+  
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  
+  color: white;
+  text-align: center;
+}
+
+.card h1 {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 25px auto;
+  padding: 0;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 3px; /* Ditambah dikit biar makin cakep */
+}
+
+/* Container Input Group */
+.input-group {
+  position: relative; 
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 45px 12px 18px; 
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 14px;
+  color: #333;
+}
+
+/* Posisi Ikon Mata */
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666; /* Warna ikon abu-abu agar elegan */
+  font-size: 16px;
+  z-index: 2;
+}
+
+/* 5. BUTTONS */
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.login-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.google-btn {
+  background: #ffffff;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #ddd;
+}
+
+.google-btn:hover {
+  background: #f1f1f1;
+}
+
+/* 6. OR SEPARATOR */
+.separator {
+  margin: 18px 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 10px;
+}
+
+/* 7. FOOTER */
+.extra {
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.extra b {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="brand">
+  <h2>LIAÉ Skincare</h2>
+  <p>Your Glow, Your Beauty</p>
+</div>
+
+<div class="card">
+  <h1>Login</h1>
+
+  <div class="input-group">
+    <input id="email" type="email" placeholder="Masukkan email">
+  </div>
+
+  <div class="input-group">
+    <input id="password" type="password" placeholder="Masukkan password">
+    <i class="fa-solid fa-eye-slash toggle-password" id="eyeIcon" onclick="togglePassword()"></i>
+  </div>
+
+  <button class="btn login-btn" onclick="login()">Login</button>
+
+  <div class="separator">atau</div>
+
+  <button class="btn google-btn" onclick="loginGoogle()">
+    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" width="18" alt="G">
+    Masuk dengan Google
+  </button>
+
+  <div class="extra">
+    Belum punya akun? <b>Daftar</b>
+  </div>
+</div>
+
+<script>
+// Logic Login & Toggle Password tetap sama
+function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  const eyeIcon = document.getElementById('eyeIcon');
+
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+  } else {
+    passwordInput.type = 'password';
+    eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+  }
+}
+
+async function login() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (email === "admin@mail.com" && password === "123456") {
+    localStorage.setItem('token', 'palsu-tapi-jalan');
+    window.location.href = 'home.html';
+  } else {
+    alert('Coba: admin@mail.com & 123456');
+  }
+}
+
+function loginGoogle() {
+  alert("Login Google dalam pengembangan!");
+}
+</script>
+
+</body>
+</html>
